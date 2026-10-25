@@ -1,6 +1,6 @@
 # Desktop Pet
 
-A little companion on the Windows desktop, always on top and in front of borderless games: a cardboard box or one of twelve figures (cat, dog, fox, bunny, hamster, owl, penguin, frog, axolotl, dragon, robot, ghost; cat, dog and bunny in nine coats). It says in a speech bubble what Claude is doing and sums up each answer; Claude's questions, Next Steps' suggestions and reply options are buttons in the bubble, and with typing on a hotkey opens a box to answer without leaving the game. A click on the pet shows the last answer in short; an unanswered bubble shrinks to one line. Optionally one pet per active session, each with its own figure and a name tag, asleep while its prompt cache is cold; it warns before the cache goes cold. Built once with the C# compiler that ships with Windows and signed when a signing script is there. /pet shows it, /pet cat calico picks a figure, /pet stop sends it off.
+A desktop pet and little companion on the Windows desktop, always on top and in front of borderless games: a cardboard box or one of twelve figures (cat, dog, fox, bunny, hamster, owl, penguin, frog, axolotl, dragon, robot, ghost; cat, dog and bunny in nine coats). It says in a speech bubble what Claude is doing and sums up each answer; Claude's questions, Next Steps' suggestions and reply options are buttons in the bubble, and with typing on a hotkey opens a box to answer without leaving the game. A click on the pet shows the last answer in short; an unanswered bubble shrinks to one line. Optionally one pet per active session, each with its own figure and a name tag, asleep while its prompt cache is cold; it warns before the cache goes cold, and its menu keeps the cache warm (1 h, 3 h, always, off). Other mods at the pet: a command Blast Radius holds, a task from Human in the Loop (done or an option with one click) and the CI Watch result come up in the bubble, and stand in short beside its name. Built once with the C# compiler that ships with Windows and signed when a signing script is there. /pet shows it, /pet cat calico picks a figure, /pet stop sends it off.
 
 ![Desktop Pet](docs/pets.png)
 
@@ -14,15 +14,26 @@ In a terminal Claude Code session (2.1.287 or newer):
 /plugin install pet --marketplace LupusMalusDeviant/desktop-pet
 ```
 
+Or from a shell:
+
+```bash
+claude plugin marketplace add LupusMalusDeviant/desktop-pet
+claude plugin install pet@desktop-pet
+```
+
+## Hooks into
+
+`PreToolUse`, `PostToolUse`, `PermissionRequest`, `UserPromptSubmit`, `Stop`, `SessionStart`, `SessionEnd`
+
 ## Works with
 
 Desktop Pet needs no other mod. These add to it when installed beside it:
 
 | Mod | What it adds | Without it |
 |---|---|---|
-| [Cache Meter](https://github.com/LupusMalusDeviant/claude-mods/tree/main/plugins/cache-meter) or [Cache Tax](https://github.com/karanb192/cache-tax) | a **Keep warm (1 h)** button in the warning before the prompt cache goes cold (`/keepwarm`) | the warning comes without the button |
+| [Cache Meter](https://github.com/LupusMalusDeviant/mod-box/tree/main/plugins/cache-meter) or [Cache Tax](https://github.com/karanb192/cache-tax) | a **Keep warm (1 h)** button in the warning before the prompt cache goes cold (`/keepwarm`) | the warning comes without the button |
 | [Next Steps](https://github.com/hamzafer/claude-code-mods/tree/main/mods/next-steps) | its suggestions for the next step as buttons in the bubble | no next-step suggestions; a closing question still gets reply buttons (Haiku) |
-| the `sign-binary` skill or [Sign Guard](https://github.com/LupusMalusDeviant/claude-mods/tree/main/plugins/sign-guard) | signs the pet's program after it is built (option `signScript`) | the pet runs unsigned |
+| the `sign-binary` skill or [Sign Guard](https://github.com/LupusMalusDeviant/mod-box/tree/main/plugins/sign-guard) | signs the pet's program after it is built (option `signScript`) | the pet runs unsigned |
 
 ## Commands
 
@@ -47,7 +58,7 @@ Set them in `/config` (or when installing).
 | `ask` | `on` | Claude's questions (AskUserQuestion) appear as buttons in the bubble too; the first answer counts, the pet's or the dialog's. |
 | `remind` | `60` | A question still open whose bubble you hid (double-click, menu) comes back after that many seconds. Not while the pet is snoozed. |
 | `suggest` | `on` | With Next Steps on, its suggestions appear as buttons in the bubble. When an answer ends with a question to you, Haiku offers two or three short replies as buttons (a few tokens). A click sends one as your next prompt. |
-| `permissions` | `show` | show: the pet only says that Claude Code is waiting for your approval. answer: the bubble also offers "allow once" and "deny" for 90 seconds (never "always"; no rule is added). Mind that the pet stays on top: a click there approves. |
+| `permissions` | `show` | show: the pet only says that Claude Code is waiting for your approval. answer: the bubble also offers "allow once" and "deny" for 90 seconds (never "always"; no rule is added); a command Blast Radius holds gets "Proceed" and "Cancel" too. Mind that the pet stays on top: a click there approves. |
 | `typing` | `off` | on: a hotkey, the pet's menu or a button in the bubble opens a small input box; the text goes to Claude as the next prompt, as the answer to its open question, or in place of a suggestion. Typing takes the keyboard from the game for a moment (borderless windowed mode is fine). Any program of your user can write the pet's answer file, hence off by default. |
 | `hotkey` | `ctrl+alt+space` | Opens the input box from anywhere, also from a game. With several pets the first one gets it. |
 | `language` | `en` | Language of the texts this mod shows and writes. |
